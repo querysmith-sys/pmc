@@ -1,8 +1,8 @@
 <!-- Folder Structure -->
 pmc/
-├── main.go              # entry point, just boots the app
+├── main.go              # Entry point, boots the CLI app
 ├── cmd/
-│   ├── root.go          # root cobra command setup
+│   ├── root.go          # Root Cobra command setup
 │   ├── get.go           # GET command
 │   ├── post.go          # POST command
 │   ├── put.go           # PUT command
@@ -10,13 +10,13 @@ pmc/
 │   └── delete.go        # DELETE command
 ├── internal/
 │   ├── request/
-│   │   └── request.go   # builds and fires http requests
+│   │   └── request.go   # Builds and executes HTTP requests
 │   ├── response/
-│   │   └── response.go   # formats and displays responses
+│   │   └── response.go  # Formats and prints HTTP responses
 │   ├── auth/
-│   │   └── auth.go      # handles bearer, basic, cookie auth
+│   │   └── auth.go      # Handles Bearer, Basic & Cookie auth
 │   ├── history/
-│   │   └── history.go   # saves and retrieves request history
+│   │   └── history.go   # Stores and retrieves request history
 │   └── cookies/
-│       └── jar.go       # cookie storage and handling
+│       └── jar.go       # Cookie storage and management
 └── go.mod
