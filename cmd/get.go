@@ -15,3 +15,7 @@ var getCmd = &cobra.Command{
 		fmt.Printf("Sending GET request to: %s\n", url)
 	},
 }
+
+func init() {
+	Rootcmd.AddCommand(getCmd)
+}

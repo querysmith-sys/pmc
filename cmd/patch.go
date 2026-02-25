@@ -15,3 +15,8 @@ var patchCmd = &cobra.Command{
 		fmt.Printf("Sending PATCH request to: %s\n", url)
 	},
 }
+
+func init() {
+	patchCmd.Flags().StringP("body", "b", "", "Provide Data to be send in the body of the Patch request")
+	Rootcmd.AddCommand(patchCmd)
+}

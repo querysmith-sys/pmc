@@ -15,3 +15,8 @@ var putCmd = &cobra.Command{
 		fmt.Printf("Sending PUT request to: %s\n", url)
 	},
 }
+
+func init() {
+	putCmd.Flags().StringP("body", "b", "", "Provide Data to be send in the body of the put request")
+	Rootcmd.AddCommand(putCmd)
+}

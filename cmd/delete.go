@@ -15,3 +15,8 @@ var deleteCmd = &cobra.Command{
 		fmt.Printf("Sending DELETE request to: %s\n", url)
 	},
 }
+
+func init() {
+	deleteCmd.Flags().StringP("body", "b", "", "Provide Data to be send in the body of the delete request")
+	Rootcmd.AddCommand(deleteCmd)
+}
