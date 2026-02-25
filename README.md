@@ -1,5 +1,6 @@
 <!-- Folder Structure -->
-```pmc/
+```
+pmc/
 ├── main.go              # Entry point, boots the CLI app
 ├── cmd/
 │   ├── root.go          # Root Cobra command setup
