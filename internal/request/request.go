@@ -15,13 +15,15 @@ var client = &http.Client{
 
 // function for resuable request handler also add headers for contentType and accept as application/json
 
-func RequestHandler(method string, url string, body io.Reader) (*http.Response, error) {
+func RequestHandler(method string, url string, body io.Reader, headers map[string]string) (*http.Response, error) {
 
 	// creating a req  with the method url and body
 
 	req, err := http.NewRequest(method, url, body)
 	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
-	// fmt.Printf(req.Method)
+	for key, value := range headers {
+		req.Header.Set(key, value)
+	}
 	if err != nil {
 		return nil, fmt.Errorf("failed to create request: %w", err)
 	}
