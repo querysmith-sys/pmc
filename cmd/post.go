@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"os"
 	"pmc/internal/request"
 	"strings"
 
@@ -20,6 +21,18 @@ var postCmd = &cobra.Command{
 		fmt.Printf("Sending POST request to: %s\n", url)
 		body, _ := cmd.Flags().GetString("body")
 		header, _ := cmd.Flags().GetString("header")
+		filePath, _ := cmd.Flags().GetString("file")
+		if filePath == "" {
+			fmt.Printf("Error File Path Empty")
+		}
+		file, error := os.Open(filePath)
+		if error != nil {
+			fmt.Printf("Error Opening File: %v\n", error)
+			return
+		}
+		defer file.Close()
+
+		fmt.Printf("Successfully opened %s for upload!\n", filePath)
 		var headerData map[string]string
 		err := json.Unmarshal([]byte(header), &headerData)
 		if err != nil {
@@ -48,6 +61,8 @@ func init() {
 	postCmd.Flags().StringP("body", "b", "", "Provide Data to be send in the body of the post request")
 	// defineing a  flag for custom header in the format of key and value and mulyiple header can be added by seperating them with comma and key and value should be seperated by colon
 	postCmd.Flags().StringP("header", "H", "", "Provide custom headers in the format key:value,key:value")
+	// defining a flag for  multipart/formData file upload
+	postCmd.Flags().StringP("file", "-F", "", "Flag for uploading File")
 	Rootcmd.AddCommand(postCmd)
 }
 
