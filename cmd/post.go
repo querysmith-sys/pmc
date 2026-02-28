@@ -1,13 +1,10 @@
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
 	"io"
-	"log"
-	"os"
+	bodybuilder "pmc/internal/body-builder"
 	"pmc/internal/request"
-	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -22,23 +19,10 @@ var postCmd = &cobra.Command{
 		body, _ := cmd.Flags().GetString("body")
 		header, _ := cmd.Flags().GetString("header")
 		filePath, _ := cmd.Flags().GetString("file")
-		if filePath == "" {
-			fmt.Printf("Error File Path Empty")
-		}
-		file, error := os.Open(filePath)
-		if error != nil {
-			fmt.Printf("Error Opening File: %v\n", error)
-			return
-		}
-		defer file.Close()
 
-		fmt.Printf("Successfully opened %s for upload!\n", filePath)
-		var headerData map[string]string
-		err := json.Unmarshal([]byte(header), &headerData)
-		if err != nil {
-			log.Fatal(err)
-		}
-		resp, err := request.RequestHandler("POST", url, strings.NewReader(body), headerData)
+		bodyReader, headerData := bodybuilder.Bodybuilder(filePath, header, body)
+
+		resp, err := request.RequestHandler("POST", url, bodyReader, headerData)
 
 		if err != nil {
 			fmt.Printf("Error: %v\n", err)
@@ -62,7 +46,7 @@ func init() {
 	// defineing a  flag for custom header in the format of key and value and mulyiple header can be added by seperating them with comma and key and value should be seperated by colon
 	postCmd.Flags().StringP("header", "H", "", "Provide custom headers in the format key:value,key:value")
 	// defining a flag for  multipart/formData file upload
-	postCmd.Flags().StringP("file", "-F", "", "Flag for uploading File")
+	postCmd.Flags().StringP("file", "F", "", "Flag for uploading File")
 	Rootcmd.AddCommand(postCmd)
 }
 

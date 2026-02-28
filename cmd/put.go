@@ -1,12 +1,10 @@
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
 	"io"
-	"log"
+	bodybuilder "pmc/internal/body-builder"
 	"pmc/internal/request"
-	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -17,15 +15,13 @@ var putCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		url := args[0]
+		fmt.Printf("Sending PUT request to: %s\n", url)
 		body, _ := cmd.Flags().GetString("body")
 		header, _ := cmd.Flags().GetString("header")
-		var headerData map[string]string
-		err := json.Unmarshal([]byte(header), &headerData)
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Printf("Sending PUT request to: %s\n", url)
-		resp, err := request.RequestHandler("PUT", url, strings.NewReader(body), headerData)
+		filePath, _ := cmd.Flags().GetString("file")
+
+		bodyReader, headerData := bodybuilder.Bodybuilder(filePath, header, body)
+		resp, err := request.RequestHandler("PUT", url, bodyReader, headerData)
 		if err != nil {
 			fmt.Printf("Error %v\n", err)
 			return
@@ -43,5 +39,6 @@ var putCmd = &cobra.Command{
 func init() {
 	putCmd.Flags().StringP("body", "b", "", "Provide Data to be send in the body of the put request")
 	putCmd.Flags().StringP("header", "H", "", "Provide any header info")
+	putCmd.Flags().StringP("file", "F", "", "Flag for uploading File")
 	Rootcmd.AddCommand(putCmd)
 }

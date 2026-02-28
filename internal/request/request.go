@@ -20,7 +20,6 @@ func RequestHandler(method string, url string, body io.Reader, headers map[strin
 	// creating a req  with the method url and body
 
 	req, err := http.NewRequest(method, url, body)
-	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
 	for key, value := range headers {
 		req.Header.Set(key, value)
 	}

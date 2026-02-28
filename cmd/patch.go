@@ -1,12 +1,10 @@
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
 	"io"
-	"log"
+	bodybuilder "pmc/internal/body-builder"
 	"pmc/internal/request"
-	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -20,12 +18,11 @@ var patchCmd = &cobra.Command{
 		fmt.Printf("Sending PATCH request to: %s\n", url)
 		body, _ := cmd.Flags().GetString("body")
 		header, _ := cmd.Flags().GetString("header")
-		var headerData map[string]string
-		err := json.Unmarshal([]byte(header), &headerData)
-		if err != nil {
-			log.Fatal(err)
-		}
-		resp, err := request.RequestHandler("PATCH", url, strings.NewReader(body), headerData)
+
+		filePath, _ := cmd.Flags().GetString("file")
+
+		bodyReader, headerData := bodybuilder.Bodybuilder(filePath, header, body)
+		resp, err := request.RequestHandler("PATCH", url, bodyReader, headerData)
 		if err != nil {
 			fmt.Printf("Error: %v\n", err)
 			return
@@ -43,6 +40,7 @@ var patchCmd = &cobra.Command{
 
 func init() {
 	patchCmd.Flags().StringP("body", "b", "", "Provide Data to be send in the body of the Patch request")
+	patchCmd.Flags().StringP("file", "F", "", "Flag for uploading File")
 	patchCmd.Flags().StringP("header", "H", "", "Provide Header info")
 	Rootcmd.AddCommand(patchCmd)
 }
