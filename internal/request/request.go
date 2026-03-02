@@ -15,8 +15,8 @@ var client = &http.Client{
 
 // function for resuable request handler also add headers for contentType and accept as application/json
 
-func RequestHandler(method string, url string, body io.Reader, headers map[string]string) (*http.Response, error) {
-
+func RequestHandler(method string, url string, body io.Reader, headers map[string]string) (*http.Response, error, time.Duration) {
+	start := time.Now()
 	// creating a req  with the method url and body
 
 	req, err := http.NewRequest(method, url, body)
@@ -24,7 +24,7 @@ func RequestHandler(method string, url string, body io.Reader, headers map[strin
 		req.Header.Set(key, value)
 	}
 	if err != nil {
-		return nil, fmt.Errorf("failed to create request: %w", err)
+		return nil, fmt.Errorf("failed to create request: %w", err), 0
 	}
 
 	// execute the request
@@ -32,8 +32,8 @@ func RequestHandler(method string, url string, body io.Reader, headers map[strin
 	resp, err := client.Do(req)
 
 	if err != nil {
-		return nil, fmt.Errorf("request failed: %w", err)
+		return nil, fmt.Errorf("request failed: %w", err), 0
 	}
-
-	return resp, nil
+	elapsed := time.Since(start)
+	return resp, nil, elapsed
 }

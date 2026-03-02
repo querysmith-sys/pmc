@@ -2,9 +2,8 @@ package cmd
 
 import (
 	"fmt"
-	"io"
 	bodybuilder "pmc/internal/body-builder"
-	"pmc/internal/request"
+	"pmc/internal/executor"
 
 	"github.com/spf13/cobra"
 )
@@ -22,19 +21,8 @@ var patchCmd = &cobra.Command{
 		filePath, _ := cmd.Flags().GetString("file")
 
 		bodyReader, headerData := bodybuilder.Bodybuilder(filePath, header, body)
-		resp, err := request.RequestHandler("PATCH", url, bodyReader, headerData)
-		if err != nil {
-			fmt.Printf("Error: %v\n", err)
-			return
-		}
-		defer resp.Body.Close()
-		data, err := io.ReadAll(resp.Body)
-		if err != nil {
-			fmt.Printf("Error Reading Response")
-			return
-		}
 
-		fmt.Printf("Response: %s\n", string(data))
+		executor.Executor("PATCH", url, bodyReader, headerData)
 	},
 }
 
