@@ -1,10 +1,8 @@
 package tui
 
 import (
-	"fmt"
 	"time"
-
-	tea "charm.land/bubbletea/v2"
+	// tea "charm.land/bubbletea/v2"
 )
 
 type ActiveTab int
@@ -67,34 +65,4 @@ func InitModel() Model {
 		method:    "GET",
 		activeTab: TabNone,
 	}
-}
-
-func (m Model) Init() tea.Cmd {
-	return nil
-}
-
-func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
-
-	switch msg := msg.(type) {
-	case tea.WindowSizeMsg:
-		m.width = msg.Width
-		m.height = msg.Height
-	case tea.KeyMsg:
-		switch msg.String() {
-		case "q", "ctrl+c":
-			return m, tea.Quit
-		}
-	}
-
-	return m, nil
-}
-
-func (m Model) View() tea.View {
-	content := "Hello, World!"
-	v := content
-	r := fmt.Sprintf("Width: %d\nHeight: %d\n\n %s\n\nPress q to quit.", m.width, m.height, v)
-	return tea.NewView(r)
-	// result1 := tea.NewView(v)
-	// result2 := tea.NewView(r)
-	// return  result1, result2
 }
