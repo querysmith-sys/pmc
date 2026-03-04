@@ -9,6 +9,6 @@ var Rootcmd = &cobra.Command{
 	Short: "A simple and easy to understand http client cli. Alternate to postman in http cli version.",
 }
 
-func Execute() {
+func ExecuteCLI() {
 	Rootcmd.Execute()
 }

@@ -23,21 +23,21 @@ var postCmd = &cobra.Command{
 
 		bodyReader, headerData := bodybuilder.Bodybuilder(filePath, header, body)
 
-		body, status, headerDetails, responsemethod, contentLength, statusCode, timeTaken := executor.Executor("POST", url, bodyReader, headerData)
+		result := executor.Executor("POST", url, bodyReader, headerData)
 		//check for verbose to be true
 		showExtraDetails, _ := cmd.Flags().GetBool("verbose")
 		w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
 		if showExtraDetails == true {
 
-			fmt.Fprintf(w, "Method:\t%s\n", responsemethod)
-			fmt.Fprintf(w, "Content-Length:\t%d\n", contentLength)
-			fmt.Fprintf(w, "Headers:\t%v\n", headerDetails)
+			fmt.Fprintf(w, "Method:\t%s\n", result.Responsemethod)
+			fmt.Fprintf(w, "Content-Length:\t%d\n", result.ContentLength)
+			fmt.Fprintf(w, "Headers:\t%v\n", result.HeaderDetails)
 		}
 
 		fmt.Fprintln(w, "HTTP RESPONSE")
-		fmt.Fprintf(w, "Status Code:\t%d (%s)\n", statusCode, status)
-		fmt.Fprintf(w, "Time Taken:\t%s\n", timeTaken)
-		fmt.Fprintf(w, "Body:\t%s\n", body)
+		fmt.Fprintf(w, "Status Code:\t%d (%s)\n", result.StatusCode, result.Status)
+		fmt.Fprintf(w, "Time Taken:\t%s\n", result.TimeTaken)
+		fmt.Fprintf(w, "Body:\t%s\n", result.Body)
 
 		w.Flush()
 	},
