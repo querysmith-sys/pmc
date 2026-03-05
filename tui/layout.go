@@ -2,23 +2,52 @@ package tui
 
 import "github.com/charmbracelet/lipgloss"
 
+func renderTopPanels() string {
 
+	history := lipgloss.NewStyle().
+		Border(lipgloss.NormalBorder()).
+		Width(26).
+		Height(12).
+		Render("History")
 
+	response := lipgloss.NewStyle().
+		Border(lipgloss.NormalBorder()).
+		Width(54).
+		Height(12).
+		Render("Response")
 
-
-func (m Model) renderTopPanel() string {
-	topPanel := lipgloss.NewStyle().Border(lipgloss.NormalBorder()).Padding(1).Render("hello")
-	return topPanel
+	return lipgloss.JoinHorizontal(
+		lipgloss.Top,
+		history,
+		response,
+	)
 }
 
-func renderRequestbar() {
-
+func renderRequestBar() string {
+	requestBar := lipgloss.NewStyle().Border(lipgloss.NormalBorder()).Width(82).Height(3).PaddingLeft(1).Render("request bar")
+	return requestBar
 }
 
-func renderTabs() {
+func renderTabs() string {
 
+	tab1 := lipgloss.NewStyle().
+		Border(lipgloss.NormalBorder()).
+		Padding(0, 1).
+		Render("Body")
+
+	tab2 := lipgloss.NewStyle().
+		Border(lipgloss.NormalBorder()).
+		Padding(0, 1).
+		Render("Header")
+
+	return lipgloss.JoinHorizontal(
+		lipgloss.Top,
+		tab1,
+		tab2,
+	)
 }
 
-func renderTabContent() {
-
+func renderTabContent() string {
+	tabContent := lipgloss.NewStyle().Border(lipgloss.NormalBorder()).Width(82).Height(4).PaddingLeft(1).Render("Tab content")
+	return tabContent
 }
