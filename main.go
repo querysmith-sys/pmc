@@ -5,7 +5,7 @@ import (
 	"pmc/cmd"
 	"pmc/tui"
 
-	tea "charm.land/bubbletea/v2"
+	tea "github.com/charmbracelet/bubbletea"
 )
 
 var uimode = flag.Bool("ui", false, "Launch the application in TUI mode")

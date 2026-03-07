@@ -2,6 +2,8 @@ package tui
 
 import (
 	"time"
+
+	"github.com/charmbracelet/bubbles/textinput"
 	// tea "charm.land/bubbletea/v2"
 )
 
@@ -25,6 +27,11 @@ type Model struct {
 	// request inputs (you'll add real components later)
 	method string
 	url    string
+
+	urlInput textinput.Model
+	choices  []string // e.g., []string{"Option 1", "Option 2"}
+	cursor   int      // which item the user is pointing at
+	selected string   // the final selected item
 
 	bodyInput    string
 	headersInput string
@@ -61,8 +68,18 @@ type HistoryEntry struct {
 // }
 
 func InitModel() Model {
+
+	// current state of the url input
+	ti := textinput.New()
+	ti.Placeholder = "Enter URL..."
+	ti.Width = 60
+	ti.Focus()
+
 	return Model{
-		method:    "GET",
-		activeTab: TabNone,
+		urlInput: ti,
 	}
+	// return Model{
+	// 	method:    "GET",
+	// 	activeTab: TabNone,
+	// }
 }

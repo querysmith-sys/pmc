@@ -1,18 +1,17 @@
 package tui
 
 import (
-	tea "charm.land/bubbletea/v2"
 	"github.com/charmbracelet/lipgloss"
 )
 
-func (m Model) View() tea.View {
+func (m Model) View() string {
 
 	if m.width < 60 || m.height < 20 {
-		return tea.NewView("Terminal too small")
+		return "Terminal too small"
 	}
 
 	top := renderTopPanels()
-	requestBar := renderRequestBar()
+	requestBar := m.renderRequestBar()
 	tabs := renderTabs()
 	tabContent := renderTabContent()
 
@@ -34,5 +33,5 @@ func (m Model) View() tea.View {
 		content,
 	)
 
-	return tea.NewView(centered)
+	return centered
 }

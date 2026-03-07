@@ -1,6 +1,9 @@
 package tui
 
-import "github.com/charmbracelet/lipgloss"
+import (
+	"github.com/charmbracelet/lipgloss"
+	// "github.com/charmbracelet/bubbles/textinput"
+)
 
 func renderTopPanels() string {
 
@@ -23,8 +26,22 @@ func renderTopPanels() string {
 	)
 }
 
-func renderRequestBar() string {
-	requestBar := lipgloss.NewStyle().Border(lipgloss.NormalBorder()).Width(82).Height(3).PaddingLeft(1).Render("request bar")
+func (m Model) renderRequestBar() string {
+	// button style
+	sendButton := lipgloss.NewStyle().
+		Border(lipgloss.NormalBorder()).
+		Padding(0, 2).
+		Render("Send")
+
+		// combine button and input
+	content := lipgloss.JoinHorizontal(
+		lipgloss.Left,
+		m.urlInput.View(),
+		" ",
+		sendButton,
+	)
+	requestBarStyle := lipgloss.NewStyle().Border(lipgloss.NormalBorder()).Width(82).Height(3).PaddingLeft(1)
+	requestBar := requestBarStyle.Render(content)
 	return requestBar
 }
 
