@@ -5,6 +5,13 @@ import (
 	// "github.com/charmbracelet/bubbles/textinput"
 )
 
+var normalBox = lipgloss.NewStyle().
+	Border(lipgloss.NormalBorder())
+
+var focusedBox = lipgloss.NewStyle().
+	Border(lipgloss.ThickBorder()).
+	BorderForeground(lipgloss.Color("205"))
+
 func renderTopPanels() string {
 
 	history := lipgloss.NewStyle().
@@ -28,19 +35,47 @@ func renderTopPanels() string {
 
 func (m Model) renderRequestBar() string {
 	// button style
-	sendButton := lipgloss.NewStyle().
-		Border(lipgloss.NormalBorder()).
-		Padding(0, 2).
+	sendStyle := normalBox
+	if m.focusIndex == 2 {
+		sendStyle = focusedBox
+	}
+	sendButton := sendStyle.
+		Padding(0, 1).
 		Render("Send")
 
-		// combine button and input
+	// method stylr
+	methodStyle := normalBox
+	if m.focusIndex == 0 {
+		methodStyle = focusedBox
+	}
+
+	urlBox := normalBox.Render(m.urlInput.View())
+
+	if m.focusIndex == 1 {
+		urlBox = focusedBox.Render(m.urlInput.View())
+	}
+
+	methodBox := methodStyle.
+		Width(6).
+		Render(m.methods[m.methodIndex])
+
+	// input style
+
+	if m.focusIndex == 1 {
+		m.urlInput.Focus()
+	} else {
+		m.urlInput.Blur()
+	}
+	// combine button and input and method
 	content := lipgloss.JoinHorizontal(
 		lipgloss.Left,
-		m.urlInput.View(),
-		" ",
+		methodBox,
+		"",
+		urlBox,
+		"",
 		sendButton,
 	)
-	requestBarStyle := lipgloss.NewStyle().Border(lipgloss.NormalBorder()).Width(82).Height(3).PaddingLeft(1)
+	requestBarStyle := lipgloss.NewStyle().Border(lipgloss.NormalBorder()).Width(82).PaddingLeft(1)
 	requestBar := requestBarStyle.Render(content)
 	return requestBar
 }

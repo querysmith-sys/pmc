@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/charmbracelet/bubbles/textinput"
-	// tea "charm.land/bubbletea/v2"
 )
 
 type ActiveTab int
@@ -25,13 +24,11 @@ type Model struct {
 	LastMessage string
 
 	// request inputs (you'll add real components later)
-	method string
-	url    string
+	methods     []string // current state of method
+	methodIndex int
+	url         string
 
-	urlInput textinput.Model
-	choices  []string // e.g., []string{"Option 1", "Option 2"}
-	cursor   int      // which item the user is pointing at
-	selected string   // the final selected item
+	urlInput textinput.Model // input state
 
 	bodyInput    string
 	headersInput string
@@ -75,11 +72,11 @@ func InitModel() Model {
 	ti.Width = 60
 	ti.Focus()
 
+	//current state
 	return Model{
-		urlInput: ti,
+		urlInput:    ti,
+		methods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE"},
+		methodIndex: 0,
+		focusIndex:  0,
 	}
-	// return Model{
-	// 	method:    "GET",
-	// 	activeTab: TabNone,
-	// }
 }
