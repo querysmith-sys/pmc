@@ -3,23 +3,31 @@ package tui
 import (
 	"time"
 
+	"github.com/charmbracelet/bubbles/textarea"
 	"github.com/charmbracelet/bubbles/textinput"
 )
 
-type ActiveTab int
+// type ActiveTab int
 
-const (
-	TabNone ActiveTab = iota
-	TabBody
-	TabHeaders
-)
+// const (
+// 	TabNone ActiveTab = iota
+// 	TabBody
+// 	TabHeaders
+// )
 
 type Model struct {
 	width  int
 	height int
 
 	focusIndex int
-	activeTab  ActiveTab
+
+	// tabs state
+	MainTab       []string
+	MainTabIndex  int
+	BodyModeTab   []string
+	BodyModeIndex int
+	showModeList  bool
+	editor        textarea.Model
 
 	LastMessage string
 
@@ -72,11 +80,21 @@ func InitModel() Model {
 	ti.Width = 60
 	ti.Focus()
 
+	editor := textarea.New()
+	editor.Placeholder = "Enter json/formData"
+	editor.Focus()
+
 	//current state
 	return Model{
-		urlInput:    ti,
-		methods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE"},
-		methodIndex: 0,
-		focusIndex:  0,
+		urlInput:      ti,
+		methods:       []string{"GET", "POST", "PUT", "PATCH", "DELETE"},
+		methodIndex:   0,
+		focusIndex:    0,
+		MainTab:       []string{"Body", "Header"},
+		MainTabIndex:  0,
+		BodyModeTab:   []string{"FormData", "json"},
+		BodyModeIndex: 0,
+		showModeList:  false,
+		editor:        editor,
 	}
 }

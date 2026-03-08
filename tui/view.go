@@ -10,17 +10,18 @@ func (m Model) View() string {
 		return "Terminal too small"
 	}
 
-	top := renderTopPanels()
+	top := m.renderTopPanels()
 	requestBar := m.renderRequestBar()
-	tabs := renderTabs()
+	tabs := m.renderTabs()
 	tabContent := renderTabContent()
-
+	list := m.renderBodyModeList()
 	// combine layout
 	content := lipgloss.JoinVertical(
 		lipgloss.Left,
 		top,
 		requestBar,
 		tabs,
+		list,
 		tabContent,
 	)
 
