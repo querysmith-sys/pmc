@@ -35,6 +35,18 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if m.focusIndex == 3 {
 				m.showModeList = !m.showModeList
 			}
+		case "down":
+			if m.showModeList {
+				if m.BodyModeIndex < len(m.BodyModeTab)-1 {
+					m.BodyModeIndex++
+				}
+			}
+		case "up":
+			if m.showModeList {
+				if m.BodyModeIndex > 0 {
+					m.BodyModeIndex--
+				}
+			}
 		}
 		if m.focusIndex == 1 {
 			m.urlInput, cmd = m.urlInput.Update(msg)
